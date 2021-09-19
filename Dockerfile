@@ -1,10 +1,21 @@
-FROM debian:9.9-slim
+FROM golang:1.16-buster as build
 
-EXPOSE 9436
+ARG shortSHA=dummy
+
+WORKDIR /go/src/app
+ADD . /go/src/app
+
+RUN go get -d -v ./...
+RUN go build \
+    -ldflags "-X main.appVersion=$(cat VERSION) -X main.shortSha=${shortSHA}" \
+    -o /go/bin/app \
+    github.com/nshttpd/mikrotik-exporter
+
+FROM discolix/base:debug
 
 COPY scripts/start.sh /app/
-COPY dist/mikrotik-exporter_linux_amd64 /app/mikrotik-exporter
+COPY --from=build /go/bin/app /app/mikrotik-exporter
 
-RUN chmod 755 /app/*
+EXPOSE 9436
 
 ENTRYPOINT ["/app/start.sh"]
