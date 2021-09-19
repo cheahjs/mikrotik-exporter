@@ -2,7 +2,6 @@ name: Release Docker Image with new Tag
 
 on:
   push:
-    # Temp for iteration
     branches:
       - '*'
     tags:
@@ -54,3 +53,4 @@ jobs:
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
