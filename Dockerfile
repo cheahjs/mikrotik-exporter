@@ -9,7 +9,7 @@ RUN go get -d -v ./...
 RUN go build \
     -ldflags "-X main.appVersion=$(cat VERSION) -X main.shortSha=${shortSHA}" \
     -o /go/bin/app \
-    github.com/nshttpd/mikrotik-exporter
+    .
 
 FROM discolix/base:debug
 
