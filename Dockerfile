@@ -13,9 +13,8 @@ RUN go build \
 
 FROM discolix/base:debug
 
-COPY scripts/start.sh /app/
 COPY --from=build /go/bin/app /app/mikrotik-exporter
 
 EXPOSE 9436
 
-ENTRYPOINT ["/app/start.sh"]
+ENTRYPOINT ["/app/mikrotik-exporter"]
